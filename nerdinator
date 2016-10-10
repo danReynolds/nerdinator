@@ -1,0 +1,40 @@
+#!/usr/bin/ruby
+require 'yaml'
+
+NERDINATOR_CONFIG = File.expand_path("#{ENV['HOME']}/.nerdinator/nerdinator.yml")
+TMUXINATOR_CONFIG = File.expand_path("#{ENV['HOME']}/.tmuxinator")
+COMMANDS = {
+  start: 'start',
+  add: 'add',
+  remove: 'remove',
+  list: 'list'
+}
+
+unless command = ARGV.first
+  puts 'No command specified'
+end
+
+if command == COMMANDS[:start]
+  config = YAML.load_file(NERDINATOR_CONFIG)
+  config.to_a.each do |session_name, session_settings|
+    session_file = YAML.load_file("#{TMUXINATOR_CONFIG}/#{session_name}.yml")
+    settings = session_file['nerdinator'].map { |k, v| "#{k}=#{v}" }.join(' ')
+    %x[tmuxinator start #{session_name} #{settings}]
+    puts "Nerdinator sessions started:", %x[tmux ls]
+  end
+elsif command == COMMANDS[:add] && session_name = ARGV[1]
+  config = YAML.load_file(NERDINATOR_CONFIG) || Hash.new
+  config[session_name] = String.new
+  File.open(NERDINATOR_CONFIG, 'w') do |f|
+    YAML.dump(config, f)
+  end
+  %x[ln -s #{ENV['PWD']}/tmuxinator.yml #{ENV['HOME']}/.tmuxinator/#{session_name}.yml]
+elsif command == COMMANDS[:remove] && session_name = ARGV[1]
+  %x[rm #{ENV['HOME']}/.tmuxinator/#{session_name}.yml]
+elsif command == COMMANDS[:list]
+  if config = YAML.load_file(NERDINATOR_CONFIG)
+    puts config.to_a.map(&:first)
+  else
+    puts 'No nerdinator sessions.'
+  end
+end
