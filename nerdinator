@@ -10,31 +10,87 @@ COMMANDS = {
   list: 'list'
 }
 
+def namespace_session(session_params, namespaced_sessions)
+  namespaced_sessions[session_params.first] ||= {}
+  if session_params.length > 1
+    session = session_params.shift
+    namespace_session(session_params, namespaced_sessions[session])
+  end
+end
+
+def traverse_sessions(session_params, namespaced_sessions)
+  if session_params.length > 1
+    session = session_params.shift
+    traverse_sessions(session_params, namespaced_sessions[session])
+  else
+    namespaced_sessions
+  end
+end
+
+def run_sessions(session_name, namespaced_sessions)
+  if namespaced_sessions.keys.length.zero?
+    session_file = YAML.load_file("#{TMUXINATOR_CONFIG}/#{session_name}.yml")
+    settings = session_file['nerdinator'].map { |k, v| "#{k}=#{v}" }.join(' ')
+    puts "#{session_name}"
+    %x[tmuxinator start #{session_name} #{settings}]
+  else
+    namespaced_sessions.to_a.each do |session_name, sub_sessions|
+      run_sessions(session_name, sub_sessions)
+    end
+  end
+end
+
+def list_sessions(namespaced_sessions, spacing = '')
+  namespaced_sessions.to_a.each do |session_name, sub_sessions|
+    if sub_sessions.keys.length.zero?
+      puts "#{spacing}#{session_name}"
+    else
+      puts "#{spacing}#{session_name}:"
+      list_sessions(sub_sessions, "#{spacing}  ")
+    end
+  end
+end
+
+def remove_sessions(session_params, namespaced_sessions)
+  if session_params.length > 1
+    session = session_params.shift
+    remove_sessions(session_params, namespaced_sessions[session])
+    namespaced_sessions.delete(session) if namespaced_sessions[session].keys.length.zero?
+  else
+    namespaced_sessions.delete(session_params.first)
+  end
+end
+
 unless command = ARGV.first
   puts 'No command specified'
 end
 
-if command == COMMANDS[:start]
+if command == COMMANDS[:start] && session_name = ARGV[1]
   config = YAML.load_file(NERDINATOR_CONFIG)
-  config.to_a.each do |session_name, session_settings|
-    session_file = YAML.load_file("#{TMUXINATOR_CONFIG}/#{session_name}.yml")
-    settings = session_file['nerdinator'].map { |k, v| "#{k}=#{v}" }.join(' ')
-    %x[tmuxinator start #{session_name} #{settings}]
-    puts "Nerdinator sessions started:", %x[tmux ls]
-  end
+
+  puts 'Nerdinator sessions started:'
+  session_params = session_name.split('/')
+  sub_sessions = traverse_sessions(session_params, config)
+  run_sessions(session_params.last, sub_sessions[session_params.last])
 elsif command == COMMANDS[:add] && session_name = ARGV[1]
   config = YAML.load_file(NERDINATOR_CONFIG) || Hash.new
-  config[session_name] = String.new
+  session_params = session_name.split('/')
+
+  namespace_session(session_params, config)
   File.open(NERDINATOR_CONFIG, 'w') do |f|
     YAML.dump(config, f)
   end
-  %x[ln -s #{ENV['PWD']}/tmuxinator.yml #{ENV['HOME']}/.tmuxinator/#{session_name}.yml]
+
+  %x[ln -s #{ENV['PWD']}/tmuxinator.yml #{ENV['HOME']}/.tmuxinator/#{session_params.last}.yml]
 elsif command == COMMANDS[:remove] && session_name = ARGV[1]
-  %x[rm #{ENV['HOME']}/.tmuxinator/#{session_name}.yml]
-elsif command == COMMANDS[:list]
-  if config = YAML.load_file(NERDINATOR_CONFIG)
-    puts config.to_a.map(&:first)
-  else
-    puts 'No nerdinator sessions.'
+  config = YAML.load_file(NERDINATOR_CONFIG) || Hash.new
+  session_params = session_name.split('/')
+  remove_sessions(session_params, config)
+
+  File.open(NERDINATOR_CONFIG, 'w') do |f|
+    YAML.dump(config, f)
   end
+  # %x[rm #{ENV['HOME']}/.tmuxinator/#{session_name}.yml]
+elsif command == COMMANDS[:list]
+  list_sessions(config) if config = YAML.load_file(NERDINATOR_CONFIG)
 end
