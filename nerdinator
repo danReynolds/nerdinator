@@ -30,7 +30,8 @@ end
 def run_sessions(session_name, namespaced_sessions)
   if namespaced_sessions.keys.length.zero?
     session_file = YAML.load_file("#{TMUXINATOR_CONFIG}/#{session_name}.yml")
-    settings = session_file['nerdinator'].map { |k, v| "#{k}=#{v}" }.join(' ')
+    nerdinator_config = session_file['nerdinator']
+    settings = nerdinator_config.map { |k, v| "#{k}=#{v}" }.join(' ') if nerdinator_config
     puts "#{session_name}"
     %x[tmuxinator start #{session_name} #{settings}]
   else
