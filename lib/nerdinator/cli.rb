@@ -35,7 +35,7 @@ module Nerdinator
     desc 'start NAMESPACE', 'start all tmux sessions under NAMESPACE using their tmuxinator configs'
     def start(session_path = String.new)
       session_query = session_path.split('/')
-      puts(@session.leaves(session_query).uniq)
+      @config.start(@session.leaves(session_query).uniq)
     end
   end
 end

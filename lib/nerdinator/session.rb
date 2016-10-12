@@ -44,11 +44,8 @@ module Nerdinator
         end
       else
         session = session_query.shift
-        sub_leaves = leaves(session_query, tree[session])
-        if sub_leaves.empty?
-          [session]
-        else
-          sub_leaves
+        leaves(session_query, tree[session]). tap do |sub_leaves|
+          sub_leaves << session if sub_leaves.empty?
         end
       end
     end
