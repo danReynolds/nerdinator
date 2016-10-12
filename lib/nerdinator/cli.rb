@@ -7,12 +7,15 @@ module Nerdinator
       @session.tree = @config.read || Hash.new
     end
 
-    desc 'list', 'list all namespaced tmuxinator sessions'
+    desc 'list',
+         'list all namespaced tmuxinator sessions'
     def list
       @session.list
     end
 
-    desc 'add [NAMESPACE]/NAME', 'add tmuxinator config NAME to the specified namespace if provided, else to the top level namespace'
+    desc 'add [NAMESPACE]/NAME',
+         'add tmuxinator config NAME to the specified namespace if provided, else to the top
+          level namespace'
     def add(session_path)
       session_query = session_path.split('/')
       @session.add(session_query)
@@ -21,7 +24,8 @@ module Nerdinator
       @config.link(session_query.last)
     end
 
-    desc 'remove NAMESPACE/[NAME]', 'remove config NAME from the NAMESPACE if provided, else recursively remove NAMESPACE'
+    desc 'remove NAMESPACE/[NAME]',
+         'remove config NAME from the NAMESPACE if provided, else recursively remove NAMESPACE'
     def remove(session_path)
       session_query = session_path.split('/')
       @session.remove(session_query)
