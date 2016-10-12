@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["danreynolds"]
   spec.email         = ["me@danreynolds.ca"]
 
-  spec.summary       = %q{Aggregator for groupings of Tmuxinator sessions}
+  spec.summary       = %q{Command-line interface for organizing and running groups of Tmuxinator configurations}
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
