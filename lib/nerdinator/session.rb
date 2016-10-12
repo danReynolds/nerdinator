@@ -44,7 +44,12 @@ module Nerdinator
         end
       else
         session = session_query.shift
-        leaves(session_query, tree[session])
+        sub_leaves = leaves(session_query, tree[session])
+        if sub_leaves.empty?
+          [session]
+        else
+          sub_leaves
+        end
       end
     end
   end
