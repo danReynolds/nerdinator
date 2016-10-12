@@ -14,25 +14,13 @@ Place a `tmuxinator.yml` file in the root of each of your projects.
 
 There are then 4 commands you can use:
 
-* `nerdinator add Projects/nerdinator`:
+1. `nerdinator add Projects/nerdinator`: scopes the tmuxinator configuration in the current directory to the Projects namespace and namespaces can be nested arbitrarily.
 
-scopes the tmuxinator configuration in the current directory to the Projects namespace and namespaces can be nested arbitrarily.
+2. `nerdinator start Projects`: starts a tmux session for each configuration listed under the Projects namespace. `nerdinator start Projects/nerdinator`: Similarly starts only the tmux session for the nerdinator configuration.
 
-* `nerdinator start Projects`:
+3. `nerdinator remove Projects/nerdinator`: removes nerdinator from the Projects namespace. `nerdinator remove Projects`: removes all under the namespace.
 
-starts a tmux session for each configuration listed under the Projects namespace.
-
-`nerdinator start Projects/nerdinator`:
-
-starts only the tmux session for the nerdinator configuration.
-
-* `nerdinator remove Projects/nerdinator`:
-
-removes nerdinator from the Projects namespace. Similarly `nerdinator remove Projects` removes all under the namespace.
-
-* `nerdinator list`:
-
-shows all the namespaces and their descendent configurations.
+4. `nerdinator list`: shows all the namespaces and their descendent configurations.
 
 ## Development
 
