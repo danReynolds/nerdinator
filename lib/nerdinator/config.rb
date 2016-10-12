@@ -16,8 +16,14 @@ module Nerdinator
       File.expand_path("#{ENV['PWD']}/tmuxinator.yml")
     end
 
-    def read(file = root)
-      YAML.load_file(file)
+    def setup(path)
+      Dir.mkdir(path.split('/')[0...-1].join('/'))
+      File.write(path, '')
+    end
+
+    def read(path = root)
+      setup(path) unless File.exists?(path)
+      YAML.load_file(path)
     end
 
     def write(data)
@@ -46,7 +52,8 @@ module Nerdinator
     end
 
     def link(name)
-      File.symlink(local, "#{tmuxinator_root}/#{name}.yml")
+      path = "#{tmuxinator_root}/#{name}.yml"
+      File.symlink(local, path) unless File.symlink?(path)
     end
   end
 end
