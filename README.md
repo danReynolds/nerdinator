@@ -1,39 +1,34 @@
 # Nerdinator
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nerdinator`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+[Tmuxinator](https://github.com/tmuxinator/tmuxinator) makes it easy to run custom tmux sessions with your panes and windows set the exact way that you like them. Nerdinator makes it easy to start arbitrary groups of tmux sessions each with their own tmuxinator configuration.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'nerdinator'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install nerdinator
+`gem install nerdinator`
 
 ## Usage
 
-TODO: Write usage instructions here
+Place a `tmuxinator.yml` file in the root of each of your projects.
+
+There are then 4 commands you can use:
+
+1. `nerdinator add Projects/nerdinator` scopes the tmuxinator configuration in the current directory to the Projects namespace and namespaces can be nested arbitrarily.
+
+2. `nerdinator start Projects` starts a tmux session for each configuration listed under the Projects namespace. `nerdinator start Projects/nerdinator` starts only the tmux session for the nerdinator configuration.
+
+3. `nerdinator remove Projects/nerdinator` removes nerdinator from the Projects namespace. Similarly `nerdinator remove Projects` removes all under the namespace.
+
+4. `nerdinator list` shows all the namespaces and their descendent configurations.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+This project is actively under development and more features will be coming in the future.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nerdinator. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+As the default gemspec suggests:
 
+> Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nerdinator. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
