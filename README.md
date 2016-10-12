@@ -4,6 +4,8 @@
 
 ## Installation
 
+Install Tmuxinator and tmux first. Then do:
+
 `gem install nerdinator`
 
 ## Usage
@@ -12,17 +14,29 @@ Place a `tmuxinator.yml` file in the root of each of your projects.
 
 There are then 4 commands you can use:
 
-1. `nerdinator add Projects/nerdinator` scopes the tmuxinator configuration in the current directory to the Projects namespace and namespaces can be nested arbitrarily.
+1. `nerdinator add Projects/nerdinator`:
 
-2. `nerdinator start Projects` starts a tmux session for each configuration listed under the Projects namespace. `nerdinator start Projects/nerdinator` starts only the tmux session for the nerdinator configuration.
+scopes the tmuxinator configuration in the current directory to the Projects namespace and namespaces can be nested arbitrarily.
 
-3. `nerdinator remove Projects/nerdinator` removes nerdinator from the Projects namespace. Similarly `nerdinator remove Projects` removes all under the namespace.
+2. `nerdinator start Projects`:
 
-4. `nerdinator list` shows all the namespaces and their descendent configurations.
+starts a tmux session for each configuration listed under the Projects namespace.
+
+`nerdinator start Projects/nerdinator`:
+
+starts only the tmux session for the nerdinator configuration.
+
+3. `nerdinator remove Projects/nerdinator`:
+
+removes nerdinator from the Projects namespace. Similarly `nerdinator remove Projects` removes all under the namespace.
+
+4. `nerdinator list`:
+
+shows all the namespaces and their descendent configurations.
 
 ## Development
 
-This project is actively under development and more features will be coming in the future.
+This project is actively under development and more features will be coming in the future. I really enjoyed how tmuxinator makes it easy to do complex things and this further level of indirection continues that spirit.
 
 ## Contributing
 
