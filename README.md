@@ -18,7 +18,7 @@ There are then 4 commands you can use:
 
 2. `nerdinator start Projects`: starts a tmux session for each configuration listed under the Projects namespace. `nerdinator start Projects/nerdinator`: Similarly starts only the tmux session for the nerdinator configuration.
 
-3. `nerdinator remove Projects/nerdinator`: removes nerdinator from the Projects namespace. `nerdinator remove Projects`: removes all under the namespace.
+3. `nerdinator remove Projects/nerdinator`: removes nerdinator from the Projects namespace. `nerdinator remove Projects`: removes all the Projects namespace and all sub configurations recursively.
 
 4. `nerdinator list`: shows all the namespaces and their descendent configurations.
 
