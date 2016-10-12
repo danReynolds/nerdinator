@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'nerdinator'
+
+Nerdinator::Cli.start(ARGV)

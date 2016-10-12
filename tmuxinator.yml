@@ -23,6 +23,9 @@ root: /Users/danreynolds/Projects/nerdinator
 # Controls whether the tmux session should be attached to automatically. Defaults to true.
 attach: false
 
+nerdinator:
+  home: /Users/danreynolds/.nerdinator/nerdinator.yml
+
 # Runs after everything. Use it to attach to tmux with custom options etc.
 # post: tmux -CC attach -t test
 
@@ -34,3 +37,5 @@ windows:
           - git status
         - nerdinator_terminal:
           - nerdinator list
+        - vim:
+          - vim <%= @settings['home'] %>
